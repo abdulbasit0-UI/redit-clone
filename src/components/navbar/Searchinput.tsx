@@ -7,15 +7,16 @@ import {
   InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react";
+import { User } from "firebase/auth";
 import React from "react";
 
 type SearchinputProps = {
-  // user
+  user?: User | null | undefined;
 };
 
-const Searchinput: React.FC<SearchinputProps> = () => {
+const Searchinput: React.FC<SearchinputProps> = ({ user }) => {
   return (
-    <Flex flexGrow="1" mr="2" align="center">
+    <Flex flexGrow="1" mr="2" maxWidth={user ? "auto" : "600px"} align="center">
       <InputGroup>
         <InputLeftElement pointerEvents="none">
           <SearchIcon color="gray.300" mb="1" />
