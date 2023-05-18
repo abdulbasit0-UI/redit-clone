@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import { authModelState } from "../../../atoms/authModal";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../../../firebase/clientApp";
+import { FIREBASE_ERRORS } from "../../../firebase/errors";
 type LoginProps = {};
 
 const Login: React.FC<LoginProps> = () => {
@@ -25,7 +26,10 @@ const Login: React.FC<LoginProps> = () => {
   };
 
   //   Firebase Logic
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {};
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    signInWithEmailAndPassword(loginForm.email, loginForm.password);
+  };
   return (
     <form onSubmit={onSubmit}>
       <Input
@@ -64,9 +68,39 @@ const Login: React.FC<LoginProps> = () => {
         bg="gray.50"
         mb={2}
       />
-      <Button width="100%" mt={2} mb={2} height="36px" type="submit">
+      {error && (
+        <Text color="red" textAlign="center" fontSize="10pt">
+          {FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
+        </Text>
+      )}
+      <Button
+        width="100%"
+        mt={2}
+        mb={2}
+        isLoading={loading}
+        height="36px"
+        type="submit"
+      >
         Login
       </Button>
+      <Flex justifyContent="center" mb={2}>
+        <Text fontSize="9pt" mr={1}>
+          Forgot your password?
+        </Text>
+        <Text
+          fontSize="9pt"
+          color="blue.500"
+          cursor="pointer"
+          onClick={() =>
+            setModelState((prev) => ({
+              ...prev,
+              view: "resetPassword",
+            }))
+          }
+        >
+          Reset
+        </Text>
+      </Flex>
       <Flex fontSize="9pt" justify="center">
         <Text mr={1}>New Here?</Text>
         <Text
