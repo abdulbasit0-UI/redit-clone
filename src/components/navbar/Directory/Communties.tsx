@@ -9,12 +9,12 @@ const Communties: React.FC<CommuntiesProps> = () => {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <CreateCommunityModal />
+      <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />
       <MenuItem
         width="100%"
         fontSize="10pt"
         _hover={{ bg: "gray.100" }}
-        onClick={() => {}}
+        onClick={() => setOpen(true)}
       >
         <Flex align="center">
           <Icon fontSize={20} mr={2} as={GrAdd} />
