@@ -13,8 +13,17 @@ import {
   Input,
   Stack,
   Checkbox,
+  Flex,
+  Icon,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import {
+  BsEyeFill,
+  BsFillEyeFill,
+  BsFillPersonFill,
+  BsPersonFill,
+} from "react-icons/bs";
+import { HiLockClosed } from "react-icons/hi";
 
 type CreateCommunityModalProps = {
   open: boolean;
@@ -27,7 +36,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
 }) => {
   const [communityName, setCommunityName] = useState("");
   const [charsRemaining, setCharsRemaining] = useState(21);
-  const [communityType, setCommunityType] = useState("Public");
+  const [communityType, setCommunityType] = useState("public");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > 21) {
@@ -37,9 +46,15 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
 
     setCharsRemaining(21 - event.target.value.length);
   };
+
+  const onCommunityTypeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setCommunityType(event.target.name);
+  };
   return (
     <>
-      <Modal isOpen={open} onClose={handleClose}>
+      <Modal isOpen={open} onClose={handleClose} size="lg">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader
@@ -89,18 +104,70 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
                   Community type
                 </Text>
                 <Stack>
-                  <Checkbox>Public</Checkbox>
-                  <Checkbox>Restricted</Checkbox>
-                  <Checkbox>Private</Checkbox>
+                  <Checkbox
+                    onChange={onCommunityTypeChange}
+                    name="public"
+                    isChecked={communityType === "public"}
+                  >
+                    <Flex align="center">
+                      <Icon as={BsFillPersonFill} color="gray.500" mr="2" />
+                      <Text fontSize="10pt" mr={1}>
+                        Public
+                      </Text>
+                      <Text fontSize="8pt" color="gray.400">
+                        Anyone can view, post, and comment to this community
+                      </Text>
+                    </Flex>
+                  </Checkbox>
+                  <Checkbox
+                    onChange={onCommunityTypeChange}
+                    name="restricted"
+                    isChecked={communityType === "restricted"}
+                  >
+                    <Flex align="center">
+                      <Icon as={BsFillEyeFill} color="gray.500" mr="2" />
+                      <Text fontSize="10pt" mr={1}>
+                        Restricted
+                      </Text>
+                      <Text fontSize="8pt" color="gray.400">
+                        Anyone can view this community, but only approved users
+                        can post
+                      </Text>
+                    </Flex>
+                  </Checkbox>
+                  <Checkbox
+                    onChange={onCommunityTypeChange}
+                    isChecked={communityType === "private"}
+                    name="private"
+                  >
+                    <Flex align="center">
+                      <Icon as={HiLockClosed} color="gray.500" mr="2" />
+                      <Text fontSize="10pt" mr={1}>
+                        Private
+                      </Text>
+                      <Text fontSize="8pt" color="gray.400">
+                        Only approved users can view and submit to this
+                        community
+                      </Text>
+                    </Flex>
+                  </Checkbox>
                 </Stack>
               </Box>
             </ModalBody>
           </Box>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleClose}>
-              Close
+          <ModalFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
+            <Button
+              variant="outline"
+              colorScheme="blue"
+              height="30px"
+              mr={3}
+              onClick={handleClose}
+            >
+              Cancel
             </Button>
-            <Button variant="ghost">Secondary Action</Button>
+            <Button height="30px" onClick={() => {}}>
+              Create Community
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
