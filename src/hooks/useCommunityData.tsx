@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { Community, communityState } from "../atoms/communitiesAtom";
+import {
+  Community,
+  CommunitySnippet,
+  communityState,
+} from "../atoms/communitiesAtom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore } from "../firebase/clientApp";
 import { collection, getDocs } from "firebase/firestore";
@@ -34,10 +38,16 @@ const useCommunityData = () => {
       );
 
       const snippets = snippetsDocs.docs.map((doc) => ({ ...doc.data() }));
+
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        mySnippets: snippets as CommunitySnippet[],
+      }));
       console.log(snippets);
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   const joinCommunity = (communityData: Community) => {};
@@ -51,6 +61,7 @@ const useCommunityData = () => {
   return {
     communityStateValue,
     onJoinOrLeaveCommunity,
+    loading,
   };
 };
 export default useCommunityData;
