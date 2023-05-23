@@ -1,7 +1,11 @@
 import React from "react";
 import Navbar from "../navbar/Navbar";
 
-const Layout: React.FC = ({ children }) => {
+type pageLayoutProps = {
+  children: React.ReactNode;
+};
+
+const Layout: React.FC<pageLayoutProps> = ({ children }) => {
   return (
     <>
       <Navbar />
